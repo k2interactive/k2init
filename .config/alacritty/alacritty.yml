@@ -1,33 +1,15 @@
+# full config with some explanation of settings:
+# https://gitlab.com/dwt1/dotfiles/-/blob/master/.config/alacritty/alacritty.yml
 env:
-  # TERM variable
-  #
-  # This value is used to set the `$TERM` environment variable for
-  # each instance of Alacritty. If it is not present, alacritty will
+  # This value is used to set the `$TERM` environment variable.
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
   TERM: xterm-256color
 
 window:
-  # Window dimensions (changes require restart)
-  #
-  # Specified in number of columns/lines, not pixels.
-  # If both are `0`, this setting is ignored.
-  #dimensions:
-  #  columns: 0
-  #  lines: 0
-
-  # Window position (changes require restart)
-  #
-  # Specified in number of pixels.
-  # If the position is not set, the window manager will handle the placement.
-  #position:
-  #  x: 0
-  #  y: 0
+  option_as_alt: Both    # Send correct esc sequence to terminal 
 
   # Window padding (changes require restart)
-  #
-  # Blank space added around the window in pixels. This padding is scaled
-  # by DPI and the specified value is always added at both opposing sides.
   padding:
     x: 6
     y: 6
@@ -36,33 +18,7 @@ window:
   dynamic_padding: false
 
   # Background opacity
-  #
-  # Window opacity as a floating point number from `0.0` to `1.0`.
-  # The value `0.0` is completely transparent and `1.0` is opaque.
   opacity: 1.0
-  # opacity: 0.80
-
-  # Window decorations
-  #
-  # Values for `decorations`:
-  #     - full: Borders and title bar
-  #     - none: Neither borders nor title bar
-  #
-  # Values for `decorations` (macOS only):
-  #     - transparent: Title bar, transparent background and title bar buttons
-  #     - buttonless: Title bar, transparent background, but no title bar buttons
-  #decorations: full
-
-  # Startup Mode (changes require restart)
-  #
-  # Values for `startup_mode`:
-  #   - Windowed
-  #   - Maximized
-  #   - Fullscreen
-  #
-  # Values for `startup_mode` (macOS only):
-  #   - SimpleFullscreen
-  #startup_mode: Windowed
 
   # Window title
   title: Alacritty
@@ -92,15 +48,6 @@ scrolling:
   # Scroll to the bottom when new text is written to the terminal.
   #auto_scroll: false
 
-# Spaces per Tab (changes require restart)
-#
-# This setting defines the width of a tab in cells.
-#
-# Some applications, like Emacs, rely on knowing about the width of a tab.
-# To prevent unexpected behavior in these applications, it's also required to
-# change the `it` value in terminfo when altering this setting.
-#tabspaces: 8
-
 # Font configuration
 font:
   # Normal (roman) font face
@@ -111,14 +58,14 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: Source Code Pro
+    # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
-    # family: JetBrains Mono
-    family: UbuntuMono Nerd Font
+    family: JetBrains Mono
+    # family: UbuntuMono Nerd Font
     # family: Monofur Nerd Font
-    # family: TerminessTTF Nerd Font
+    # family: Terminess Nerd Font Mono
     # family: Mononoki Nerd Font
 
     # The `style` can be specified to pick a specific face.
@@ -130,14 +77,14 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: Source Code Pro
+    # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
-    # family: JetBrains Mono
-    family: UbuntuMono Nerd Font
+    family: JetBrains Mono
+    # family: UbuntuMono Nerd Font
     # family: Monofur Nerd Font
-    # family: TerminessTTF Nerd Font
+    # family: Terminess Nerd Font Mono
     # family: Mononoki Nerd Font
 
     # The `style` can be specified to pick a specific face.
@@ -149,14 +96,14 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: Source Code Pro
+    # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
-    # family: JetBrains Mono
-    family: UbuntuMono Nerd Font
+    family: JetBrains Mono
+    # family: UbuntuMono Nerd Font
     # family: Monofuritalic Nerd Font Mono
-    # family: TerminessTTF Nerd Font
+    # family: Terminess Nerd Font Mono
     # family: Mononoki Nerd Font
 
     # The `style` can be specified to pick a specific face.
@@ -168,21 +115,21 @@ font:
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: Source Code Pro
+    # family: Source Code Pro
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
-    # family: JetBrains Mono
-    family: UbuntuMono Nerd Font
+    family: JetBrains Mono
+    # family: UbuntuMono Nerd Font
     # family: Monofuritalic Nerd Font Mono
-    # family: TerminessTTF Nerd Font
+    #family: Terminess Nerd Font Mono
     # family: Mononoki Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Bold Italic
 
   # Point size
-  size: 18.0
+  size: 14.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -819,13 +766,6 @@ schemes:
 colors: *Catppuccin-Mocha
 
 # Visual Bell
-#
-# Any time the BEL code is received, Alacritty "rings" the visual bell. Once
-# rung, the terminal background will be set to white and transition back to the
-# default background color. You can control the rate of this transition by
-# setting the `duration` property (represented in milliseconds). You can also
-# configure the transition function by setting the `animation` property.
-#
 # Values for `animation`:
 #   - Ease
 #   - EaseOut
@@ -841,22 +781,22 @@ colors: *Catppuccin-Mocha
 # Specifying a `duration` of `0` will disable the visual bell.
 visual_bell:
   animation: EaseOutExpo
-  duration: 275
-  color: '#6d0cbd'
-
+  duration: 250
+  color: '#8800aa'
+#
 #selection:
+  # TODO: verify behaviour
+  # see these chars as word seperators, ie: /foo/bar would be considered two words (probably) 
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
-  #save_to_clipboard: false
+  # save_to_clipboard: true
 
 # Allow terminal applications to change Alacritty's window title.
-#dynamic_title: true
+dynamic_title: true
 
-#cursor:
+cursor:
   # Cursor style
-  #
-  # Values for `style`:
   #   - ▇ Block
   #   - _ Underline
   #   - | Beam
@@ -866,41 +806,13 @@ visual_bell:
   # window is not focused.
   unfocused_hollow: true
 
+# TODO: comment me out when not in debugging mode
 # Live config reload (changes require restart)
-#live_config_reload: true
+live_config_reload: true
 
-# Shell
-#
-# You can set `shell.program` to the path of your favorite shell, e.g. `/bin/fish`.
-# Entries in `shell.args` are passed unmodified as arguments to the shell.
-#
-# Default:
-#   - (macOS) /bin/bash --login
-#   - (Linux/BSD) user login shell
-#   - (Windows) powershell
-#shell:
-#  program: /bin/bash
-#  args:
-#    - --login
-
-# Startup directory
-#
-# Directory the shell is started in. If this is unset, or `None`, the working
+# If this is unset, or `None`, the working
 # directory of the parent process will be used.
 #working_directory: None
-
-# WinPTY backend (Windows only)
-#
-# Alacritty defaults to using the newer ConPTY backend if it is available,
-# since it resolves a lot of bugs and is quite a bit faster. If it is not
-# available, the the WinPTY backend will be used instead.
-#
-# Setting this option to `true` makes Alacritty use the legacy WinPTY backend,
-# even if the ConPTY backend is available.
-#winpty_backend: false
-
-# Send ESC (\x1b) before characters when alt is pressed.
-#alt_send_esc: true
 
 #debug:
   # Display the time it takes to redraw each frame.
@@ -1100,5 +1012,3 @@ key_bindings:
   - { key: PageDown,  mods: None,          action: ScrollPageDown, mode: ~Alt  }
   - { key: Home,      mods: Shift,         action: ScrollToTop,    mode: ~Alt  }
   - { key: End,       mods: Shift,         action: ScrollToBottom, mode: ~Alt  }
-
-
