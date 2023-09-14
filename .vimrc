@@ -47,8 +47,8 @@ nnoremap <Leader>wq :wq<CR>
 " find primeagen mapping for what <C-d/u> does
 " the added zz is to center the view on cursor after it moves
 " 
-"nnoremap <C-d> <C-d>zz
-"nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
 
 """ 
 " Alt/Meta handling
