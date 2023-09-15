@@ -4,12 +4,16 @@ let mapleader = " "
 set ruler
 set number
 set relativenumber
+set colorcolumn=80
 set visualbell
 set scrolloff=13
 set encoding=utf-8
 set nocompatible " make vim behave more useful
 set ttyfast " defaults to true, but just in-case
 set mouse=a " make vim respond to mouse
+set ttymouse=sgr " improves how the mouse behaves (may need to be diff on diff OS)
+set clipboard=unnamed " system clipboard through "* (same caveat as above)
+
 set lazyredraw " update screen only when need to
 set showmatch " highlight matching parens etc.
 
@@ -33,27 +37,31 @@ nnoremap l guiw`]
 nmap j gj
 nmap k gk
 
-
 """" Key Bindings
-
 nnoremap <Leader>r :set relativenumber!<CR>
-nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+nnoremap <Leader>c :set cursorline!<CR>
+nnoremap <Leader>C :set cursorcolumn!<CR>
 nnoremap <Leader>e :Ex<CR> " file explorer: does not toggle
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :q!<CR>
 nnoremap <Leader>wq :wq<CR>
 
+"" Clipboard fun
+inoremap p <Esc>"*Pa    " paste from insert mode
+nnoremap <Leader>p "*p    " paste from system clipboard
+vnoremap <Leader>y "*y    " yank to system clipboard
+vnoremap <Leader>x "*d    " cut to system clipboard
+
 " find primeagen mapping for what <C-d/u> does
 " the added zz is to center the view on cursor after it moves
-" 
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 
 """ 
 " Alt/Meta handling
 """
-" use 'sed -n l' to verify that alt-c is sending '^[c' (escape+c, hence \ec) 
+" use 'sed -n l' to verify that alt-c is sending '^[c' (escape+c, hence \ec)
 " execute "set <M-c>=\ec"
 " nnoremap <M-c> :set cursorcolumn!<CR>
 "
@@ -91,7 +99,7 @@ filetype on
 filetype indent on
 filetype plugin on
 
-set cursorcolumn
+" set cursorcolumn
 set cursorline
 set showmode
 set showcmd
