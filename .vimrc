@@ -17,6 +17,10 @@ set clipboard=unnamed " system clipboard through "* (same caveat as above)
 set lazyredraw " update screen only when need to
 set showmatch " highlight matching parens etc.
 
+" Hidden allows multiple buffers to share the same window and undo
+" See for more info: https://vim.fandom.com/wiki/Example_vimrc 
+set hidden
+
 " see ':help backup' for info
 set backup
 set writebackup
@@ -88,7 +92,6 @@ inoremap k <ESC>:m .-2<CR>==gi
 vnoremap j :m '>+1<CR>gv=gv
 vnoremap k :m '<-2<CR>gv=gv
 
-
 """" Vim Appearance
 " not a bad idea but vim gets confused with Visual mode sometimes
 " nnoremap <Leader>v1 :colorscheme default<CR>
@@ -134,7 +137,6 @@ set softtabstop=4
 
 set autoindent " copy indent from current line when starting a new line
 set smartindent " add indent after {
-
 
 """" Search settings
 nnoremap <Leader>\ :let @/ = ""<CR> " -clear search- 
