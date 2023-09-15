@@ -47,11 +47,20 @@ nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :q!<CR>
 nnoremap <Leader>wq :wq<CR>
 
+nnoremap <Leader>o o<ESC>
+nnoremap <Leader>O O<ESC>
+
 "" Clipboard fun
 inoremap p <Esc>"*Pa    " paste from insert mode
 nnoremap <Leader>p "*p    " paste from system clipboard
 vnoremap <Leader>y "*y    " yank to system clipboard
 vnoremap <Leader>x "*d    " cut to system clipboard
+
+" copy paste with mouse
+vnoremap <C-LeftMouse> y 
+vnoremap <C-RightMouse> p 
+nnoremap <C-RightMouse> p 
+inoremap <C-RightMouse> <ESC>pa
 
 " find primeagen mapping for what <C-d/u> does
 " the added zz is to center the view on cursor after it moves
