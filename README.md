@@ -6,6 +6,7 @@ advise aliases
 `$ alias gcm='git commit -m'`
 `$ alias gp='git push'`
 `$ alias ga='git add'`
+`$ alias scrt='vim ~/_scratch_pad.txt'
 
 if receive behind by x commits and want to fast forward
 `git restore <file>` - discard changes in file to be able to pull
