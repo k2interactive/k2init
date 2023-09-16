@@ -53,7 +53,65 @@ esac
   # what font the user is viewing this source code in. Do not replace the
   # escape sequence with a single literal character.
   # Do not change this! Do not make it '\u2b80'; that is the old, wrong code point.
-  SEGMENT_SEPARATOR=$'\ue0b0'
+  # ORIG - SEGMENT_SEPARATOR=$'\ue0b0'
+  #
+  # ignoring aaallll of that
+  #
+  # SEGMENT_SEPARATOR=$'\ue0b0' # chevron
+  # SEGMENT_SEPARATOR=$'\ue741' # celtic-cross
+  # SEGMENT_SEPARATOR=$'\uf1d0' # rebel (star wars)
+  # SEGMENT_SEPARATOR=$'\uf074' # random arrows
+  # SEGMENT_SEPARATOR=$'\ue0b5' # half moon
+  # SEGMENT_SEPARATOR=$'\ue0c6' # 
+  # SEGMENT_SEPARATOR=$'\ue0c7' # 
+  # SEGMENT_SEPARATOR=$'\ue0c0' #
+  # SEGMENT_SEPARATOR=$'\ue0d1' #
+  # SEGMENT_SEPARATOR=$'\ue0c8' # 
+  # SEGMENT_SEPARATOR=$'\ue0cc' #
+  # SEGMENT_SEPARATOR=$'\ue0c4' #
+  # SEGMENT_SEPARATOR=$'\ue0a0' #
+  # SEGMENT_SEPARATOR=$'\ue0a1' #
+  # SEGMENT_SEPARATOR=$'\ue0a2' #
+  # SEGMENT_SEPARATOR=$'\ue0a3' #
+  # SEGMENT_SEPARATOR=$'\ue0b0' #
+  # SEGMENT_SEPARATOR=$'\ue0b1' #
+  # SEGMENT_SEPARATOR=$'\ue0b2' #
+  # SEGMENT_SEPARATOR=$'\ue0b3' #
+  # SEGMENT_SEPARATOR=$'\ue0b4' #
+  # SEGMENT_SEPARATOR=$'\ue0b5' #
+  # SEGMENT_SEPARATOR=$'\ue0b6' #
+  # SEGMENT_SEPARATOR=$'\ue0b7' #
+  # SEGMENT_SEPARATOR=$'\ue0b8' #
+  # SEGMENT_SEPARATOR=$'\ue0b9' #
+  # SEGMENT_SEPARATOR=$'\ue0ba' #
+  # SEGMENT_SEPARATOR=$'\ue0bb' #
+  # SEGMENT_SEPARATOR=$'\ue0bc' #
+  # SEGMENT_SEPARATOR=$'\ue0bd' #
+  # SEGMENT_SEPARATOR=$'\ue0be' #
+  # SEGMENT_SEPARATOR=$'\ue0bf' #
+  # SEGMENT_SEPARATOR=$'\ue0c0' #
+  # SEGMENT_SEPARATOR=$'\ue0c1' #
+  # SEGMENT_SEPARATOR=$'\ue0c2' #
+  # SEGMENT_SEPARATOR=$'\ue0c3' #
+  # SEGMENT_SEPARATOR=$'\ue0c4' #
+  # SEGMENT_SEPARATOR=$'\ue0c5' #
+  # SEGMENT_SEPARATOR=$'\ue0c6' #
+  # SEGMENT_SEPARATOR=$'\ue0c7' #
+  # SEGMENT_SEPARATOR=$'\ue0c8' #
+  # SEGMENT_SEPARATOR=$'\ue0c9' #
+  # SEGMENT_SEPARATOR=$'\ue0ca' #
+  # SEGMENT_SEPARATOR=$'\ue0cb' #
+  # SEGMENT_SEPARATOR=$'\ue0cc' #
+  # SEGMENT_SEPARATOR=$'\ue0cd' #
+  # SEGMENT_SEPARATOR=$'\ue0ce' #
+  # SEGMENT_SEPARATOR=$'\ue0cf' #
+  # SEGMENT_SEPARATOR=$'\ue0d0' # 
+  # SEGMENT_SEPARATOR=$'\ue0d1' # 
+  # SEGMENT_SEPARATOR=$'\ue0d2' # 
+  SEGMENT_SEPARATOR=$'\ue0d4' # 
+  SEGMENT_SEPARATOR=$'\ue0c6'
+  #SEGMENT_SEPARATOR=$'\ue0b4'
+  #" "
 }
 
 # Begin a segment
@@ -100,13 +158,13 @@ prompt_context() {
     D_EMOJI=$((RANDOM%=${#emojis[@]} - 1))
 
     # prompt_segment black default "%(!.%{%F{yellow}%}.)%n@%m \$"
-    prompt_segment white black "%(!.%{%F{yellow}%}.)%n@%m"
+    prompt_segment '#000000' '#FFFFFF' "%(!.%{%F{yellow}%}.)%n@%m"
 
   fi
 }
 
 prompt_input() {
-  prompt_segment green black "\$"
+  prompt_segment magenta '#FFFFFF' "\$"
 }
 
 # Git: branch/detached head, dirty status
@@ -127,9 +185,9 @@ prompt_git() {
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
     if [[ -n $dirty ]]; then
-      prompt_segment yellow black
+      prompt_segment red '#FFFFFF'
     else
-      prompt_segment green $CURRENT_FG
+      prompt_segment cyan $CURRENT_FG
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -214,7 +272,7 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue white '%~'
+  prompt_segment blue '#FFFFFF' '%~'
 }
 
 # Virtualenv: current working virtualenv
