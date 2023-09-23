@@ -169,22 +169,25 @@ set softtabstop=4
 """"       also: start setting filetype defaults for this
 set foldmethod=indent
 set foldlevel=69
+set foldcolumn=2
 
 set autoindent " copy indent from current line when starting a new line
 set smartindent " add indent after {
-" MARK TODO: doesn't seem to be honored look into
-set backspace=indent,eol,start
 
+"" without this, Vim defaults to not letting you backspace on these  
+set backspace=indent,eol,start
+    
 filetype on
+filetype plugin on
 filetype indent on
 set expandtab " auto fill tabs with spaces
-filetype plugin on
+
 "" TODO: filetype defaults for - js, ts, json, yaml, tml, toml, php, fish
 autocmd FileType yml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType vim setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType sh setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-
+autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 """" MARK View Management """"""""""""""""""""""""""""""""""""""""""""""""""""
 " TODO: understand this more
@@ -198,7 +201,9 @@ endfunction
 
 
 """" MARK Mappings """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <Leader>e :Lexplore<CR> " file explorer: does not toggle
+nnoremap <Space> <Nop>
+
+nnoremap <Leader>e :Lexplore<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :q!<CR>
@@ -207,17 +212,21 @@ nnoremap <F2> :source .vimrc<CR>
 
 
 "" UI
-nnoremap <Leader>rn :set relativenumber!<CR>
+nnoremap <Leader>urn :set relativenumber!<CR>
 nnoremap <Leader>ucl :set cursorline!<CR>
 nnoremap <Leader>ucc :set cursorcolumn!<CR>
 nnoremap <Leader>uw :set nowrap!<CR>
-nnoremap <Leader>th :call ToggleScheme()<CR>
+nnoremap <Leader>ts :call ToggleScheme()<CR>
 
 nnoremap \| :vsplit<CR>
 nnoremap \ :split<CR>
 
 nnoremap <Left> :bprev<CR>
 nnoremap <Right> :bnext<CR>
+
+nnoremap <Leader>zi :set foldmethod=indent<CR>
+nnoremap <Leader>zs :set foldmethod=syntax<CR>
+nnoremap <Leader>ze :set foldmethod=expr<CR>
 
 " Move half page and center 
 nnoremap <C-d> <C-d>zz
@@ -228,6 +237,18 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+
+" Resize split windows using arrow keys by pressing:
+noremap <silent> <C-Left> :vertical resize -3<CR>
+noremap <silent> <C-Right> :vertical resize +3<CR>
+noremap <silent> <C-Up> :resize +3<CR>
+noremap <silent> <C-Down> :resize -3<CR>
+
+" Change 2 split windows from vert to horiz or horiz to vert
+" horizontal to vertical
+map <Leader>th <C-w>t<C-w>H
+" vertical to horizontal
+map <Leader>tk <C-w>t<C-w>K
 
 " move vertically by visual line (don't skip wrapped lines)
 " reqires restart to start working
@@ -251,7 +272,10 @@ endif
 "" Search ""
 " -clear search- 
 nnoremap <Leader>\ :let @/ = ""<CR>
-"""""
+" Center the cursor vertically when moving to the next word during a search.
+nnoremap n nzz
+nnoremap N Nzz
+
 "" add a quick search for MARK
 nnoremap m /MARK<CR>  
 
@@ -287,6 +311,24 @@ nnoremap <Leader>O O<ESC>
 "" Close the current buffer and move to the previous one a la closing tabs
 nnoremap <Leader>bd :bp! \| bd #<CR>
 
+
+"""" MARK Functions """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" This allows you to undo changes to a file even after saving it.
+if version >= 703
+    set undodir=~/.vim/backup
+    set undofile
+    set undoreload=10000
+endif
+
+" TODO: like the idea, but needs more thought
+" You can split a window into sections by typing `:split` or `:vsplit`.
+" Display cursorline and cursorcolumn ONLY in active window.
+""augroup cursor_off
+""    autocmd!
+""    autocmd WinLeave * set nocursorline nocursorcolumn
+""    autocmd WinEnter * set cursorline cursorcolumn
+""augroup END
+
 " set Netrw keymaps
 function! NetrwMapping()
     nmap <buffer> <Leader>e :Lexplore<CR>
@@ -296,3 +338,5 @@ augroup netrw_mapping
     autocmd!
     autocmd filetype netrw call NetrwMapping()
 augroup END
+
+
