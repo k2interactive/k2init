@@ -20,7 +20,7 @@ if !exists("*ReloadConfigs")
 endif
 
 
-"""" MARK Basic Behavior """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" MARK Basic Behavior """""""""""""""""""""""""""""""""""""""""""""""""""""
 set splitbelow splitright " splits new window down and to the right
 set laststatus=2
 set wildmenu
@@ -52,10 +52,12 @@ set timeoutlen=500
 set ttimeoutlen=100
 
 "" netrw config
-let g:netrw_winsize = 30
+let g:netrw_winsize=25
+let g:netrw_banner=0
+let g:netrw_hide=1
+let g:netew_liststyle=3
 
-
-"""" MARK Cursor """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" MARK Cursor """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('nvim')
     set guicursor=n-v-c-sm:block-blinkon100,i-ci-ve:ver25-blinkon100,r-cr-o:hor20-blinkon100
 else
@@ -89,7 +91,7 @@ else
 endif " //End 'Cursor'
 
 
-"""" MARK Color Scheme """"""""""""""""""""""""""""""""""""""""""""""""""""
+"""" MARK Color Scheme """""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_ZH=[3m
 set t_ZR=[23m
 
@@ -136,24 +138,27 @@ if (&term =~ '^xterm' && &t_Co == 256)
 endif
 
 
-"""" MARK Indentation, tab, and white space """"""""""""""""""""""""""""""
+"""" MARK Indentation, tab, and white space """"""""""""""""""""""""""""""""""
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
 set autoindent " copy indent from current line when starting a new line
 set smartindent " add indent after {
+" MARK TODO: doesn't seem to be honored look into
+set backspace=indent,eol,start
 
 filetype on
 filetype indent on
 filetype plugin on
 set expandtab " auto fill tabs with spaces
+autocmd FileType yml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType vim setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType sh setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 
-"""" MARK Buffer """""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" MARK Buffer """"""""""""""""""""""'""""""""""""""""""""""""""""""""""""""
 "" Close the current buffer and move to the previous one a la closing tabs
 nnoremap <Leader>bd :bp! \| bd #<CR>
 " A function to skip the QuickFix buffer 
@@ -170,7 +175,7 @@ nnoremap<Leader>bn :call BSkipQuickFix("on!")<CR>
 nnoremap <Leader>bp :call DSkipQuickFix("bp")
 
 
-"""" MARK View Management """""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" MARK View Management """"""""""""""""""""""""""""""""""""""""""""""""""""
 au FileType of call AdjustWindowHeight(3, 10)
 function! AdjustWindowHieght(minheight, maxheight)
     exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
@@ -187,7 +192,6 @@ endfunction
 "set showmatch " highlight matching parens etc.
 
 "" allow backspacing over autoformatting
-"set backspace=indent,eol,start
 "" Hidden allows multiple buffers to share the same window and undo
 "" See for more info: https://vim.fandom.com/wiki/Example_vimrc 
 "set hidden
@@ -281,9 +285,9 @@ endif
 "" Search ""
 " -clear search- 
 nnoremap <Leader>\ :let @/ = ""<CR>
-""""""
+"""""
 "" add a quick search for MARK
-
+nnoremap m /MARK<CR>  
 
 "" Editing Enhancements ""
 " set bindings to move whole lines up and down. 
@@ -295,6 +299,13 @@ inoremap j <ESC>:m .+1<CR>==gi
 inoremap k <ESC>:m .-2<CR>==gi
 vnoremap j :m '>+1<CR>gv=gv
 vnoremap k :m '<-2<CR>gv=gv
+
+nnoremap <S-Down> :m .+1<CR>==
+nnoremap <S-Up> :m .-2<CR>==
+inoremap <S-Down> <ESC>:m .+1<CR>==gi
+inoremap <S-Up> <ESC>:m .-2<CR>==gi
+vnoremap <S-Down> :m '>+1<CR>gv=gv
+vnoremap <S-Up> :m '<-2<CR>gv=gv
 
 " quick UPPERCASE and lowercase word before (applies to the word you're in if mid-word)
 inoremap u <Esc>gUiw`]
