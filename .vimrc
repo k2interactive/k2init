@@ -218,8 +218,8 @@ nnoremap <Leader>ucc :set cursorcolumn!<CR>
 nnoremap <Leader>uw :set nowrap!<CR>
 nnoremap <Leader>ts :call ToggleScheme()<CR>
 
-nnoremap \| :vsplit<CR>
-nnoremap \ :split<CR>
+nnoremap <Leader>\| :vsplit<CR>
+nnoremap <Leader>\ :split<CR>
 
 nnoremap <Left> :bprev<CR>
 nnoremap <Right> :bnext<CR>
@@ -271,7 +271,7 @@ endif
 
 "" Search ""
 " -clear search- 
-nnoremap <Leader>\ :let @/ = ""<CR>
+nnoremap <Leader>/ :let @/ = ""<CR>
 " Center the cursor vertically when moving to the next word during a search.
 nnoremap n nzz
 nnoremap N Nzz
