@@ -22,13 +22,15 @@ endif
 
 """" MARK Basic Behavior """""""""""""""""""""""""""""""""""""""""""""""""""""
 set splitbelow splitright " splits new window down and to the right
-set laststatus=2
 set wildmenu
 set wildmode=full " current preferred mode
 set showtabline=2
 set ruler
 set number
 set relativenumber
+set cursorline
+set showmode
+set showcmd
 set colorcolumn=80
 set scrolloff=50 " keeps cursor x number from the egde (or pinned in the center if large enough value)
 set encoding=utf-8
@@ -37,6 +39,10 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 set hlsearch
 set incsearch
+set ignorecase " ignore case in search when all lowercase
+set smartcase " include case in search when contains uppercase
+set cmdheight=1
+
 set mouse=a " make vim respond to mouse in all modes
 if !has('nvim')
     set ttymouse=sgr " for alacritty terminfo
@@ -44,12 +50,29 @@ endif
 set display+=lastline " Show last line in the window rather than '@'
 set maxmempattern=2000000 " Avoid E363 (guessing maybe when a recursion and/or mem leak)
 set autochdir " For Neovim
+set showmatch " highlight matching parens etc.
+"" Hidden allows multiple buffers to share the same window and undo
+"" See for more info: https://vim.fandom.com/wiki/Example_vimrc 
+set hidden
+
+" TODO: these have a complicated interplay
+" need to research/experiment more
+"" see ':help backup' for info
+"set backup
+set writebackup
+
 
 " Time out - Gives you an adjustment on how fast you need to enter sequences and motions respectively. 
 set timeout
 set ttimeout
 set timeoutlen=500
 set ttimeoutlen=100
+
+set laststatus=2
+set statusline=
+set statusline+=\ %F\ %M\ %Y\ %R
+set statusline+=%=
+set statusline+=\ hex:\ 0x%B\ %l:\%c\ %p%%
 
 "" netrw config
 let g:netrw_winsize=25
@@ -68,9 +91,7 @@ else
     " Init cursor shape/color on startup
     augroup reset_iTerm_cursor_shape
     au!
-    "autocmd VimEnter * startinsert | stopinsert
     autocmd VimEnter * :normal :startinsert :stopinsert
-    "autocmd VimEnter * :normal :startinsert :stopinsert
     autocmd VimEnter * redraw!
     augroup END
   else
@@ -130,6 +151,7 @@ else
     endif
   endfunction
 endif
+
 "" Finishing touches
 
 " Prevent known issue with wrong background color during rapid scrolling
@@ -143,6 +165,11 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
+"""" TODO: setup mapping for swapping modes
+""""       also: start setting filetype defaults for this
+set foldmethod=indent
+set foldlevel=69
+
 set autoindent " copy indent from current line when starting a new line
 set smartindent " add indent after {
 " MARK TODO: doesn't seem to be honored look into
@@ -150,78 +177,25 @@ set backspace=indent,eol,start
 
 filetype on
 filetype indent on
-filetype plugin on
 set expandtab " auto fill tabs with spaces
+filetype plugin on
+"" TODO: filetype defaults for - js, ts, json, yaml, tml, toml, php, fish
 autocmd FileType yml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType vim setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType sh setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 
-"""" MARK Buffer """"""""""""""""""""""'""""""""""""""""""""""""""""""""""""""
-"" Close the current buffer and move to the previous one a la closing tabs
-nnoremap <Leader>bd :bp! \| bd #<CR>
-" A function to skip the QuickFix buffer 
-function! BSkipQuickFix(command)
-  let start_buffer = bufnr('%')
-  execute a:command
-  while &buftype =# quickfix && bufnr('%') != start_buffer
-    execute a:command 
-  endwhile
-endfunction
-" Move to next buffer
-nnoremap<Leader>bn :call BSkipQuickFix("on!")<CR>
-" Move ro prev buffer
-nnoremap <Leader>bp :call DSkipQuickFix("bp")
-
-
 """" MARK View Management """"""""""""""""""""""""""""""""""""""""""""""""""""
+" TODO: understand this more
 au FileType of call AdjustWindowHeight(3, 10)
 function! AdjustWindowHieght(minheight, maxheight)
-    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
-"" TODO:
-"" Placeholder for a set of commands i don't get yet :-(
 
 "" TODO:
 "" Good place to setup Python subsytems if desired
 
-"""""""""""""""""""""""""""""
-"set lazyredraw " update screen only when need to
-"set showmatch " highlight matching parens etc.
-
-"" allow backspacing over autoformatting
-"" Hidden allows multiple buffers to share the same window and undo
-"" See for more info: https://vim.fandom.com/wiki/Example_vimrc 
-"set hidden
-
-"" see ':help backup' for info
-"set backup
-"set writebackup
-
-""" Clipboard fun
-"inoremap p <Esc>"*Pa    " paste from insert mode
-
-""""" Vim Appearance
-
-"set cursorline
-"set showmode
-"set showcmd
-
-"" TODO: control vim statusbar colors
-"set statusline=
-"set statusline+=\ %F\ %M\ %Y\ %R
-"set statusline+=%=
-"set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
-
-
-"set ignorecase " ignore case in search when all lowercase
-"set smartcase " include case in search when contains uppercase
-
-"""" others
-"set cmdheight=2
-"set foldmethod=indent
 
 """" MARK Mappings """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <Leader>e :Lexplore<CR> " file explorer: does not toggle
@@ -231,14 +205,6 @@ nnoremap <Leader>Q :q!<CR>
 nnoremap <Leader>wq :wq<CR>
 nnoremap <F2> :source .vimrc<CR>
 
-function! NetrwMapping()
-  nmap <buffer> <Leader>e :Lexplore<CR>
-endfunction
-
-augroup netrw_mapping
-  autocmd!
-  autocmd filetype netrw call NetrwMapping()
-augroup END
 
 "" UI
 nnoremap <Leader>rn :set relativenumber!<CR>
@@ -316,3 +282,17 @@ nnoremap l guiw`]
 " insert blank lines from normal mode
 nnoremap <Leader>o o<ESC>
 nnoremap <Leader>O O<ESC>
+
+"" TODO: investigate below behavior, also look at Astro <Leader>c and <Leader>C is force close
+"" Close the current buffer and move to the previous one a la closing tabs
+nnoremap <Leader>bd :bp! \| bd #<CR>
+
+" set Netrw keymaps
+function! NetrwMapping()
+    nmap <buffer> <Leader>e :Lexplore<CR>
+endfunction
+
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
