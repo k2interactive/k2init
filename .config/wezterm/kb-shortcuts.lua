@@ -1,0 +1,30 @@
+local wezterm = require 'wezterm'
+local act = wezterm.action
+
+return {
+  { key = '\\',         mods = 'SUPER',       action = act.SplitVertical{ domain = 'CurrentPaneDomain' }, },
+  { key = '|',          mods = 'SUPER',       action = act.SplitHorizontal{ domain = 'CurrentPaneDomain' }, },
+  { key = 'UpArrow',    mods = 'SUPER',       action = act.ScrollByLine(-1) },
+  { key = 'UpArrow',    mods = 'SUPER|SHIFT', action = act.ScrollByLine(-15) },
+  { key = 'DownArrow',  mods = 'SUPER',       action = act.ScrollByLine(1) },
+  { key = 'DownArrow',  mods = 'SUPER|SHIFT', action = act.ScrollByLine(15) },
+  { key = 'p',          mods = 'SUPER|SHIFT', action = act.ActivateCommandPalette },
+  { key = 'p',          mods = 'ALT|SHIFT',   action = act.ActivateCommandPalette },
+  { key = ']',          mods = 'SUPER',       action = act.RotatePanes 'Clockwise' },
+  { key = '[',          mods = 'SUPER',       action = act.RotatePanes 'CounterClockwise' },
+  { key = 'LeftArrow',  mods = 'ALT|SUPER',   action = act.AdjustPaneSize { 'Left', 20 } },
+  { key = 'h',          mods = 'SUPER|SHIFT', action = act.AdjustPaneSize { 'Left', 10 } },
+  { key = 'RightArrow', mods = 'ALT|SUPER',   action = act.AdjustPaneSize { 'Right', 20 } },
+  { key = 'l',          mods = 'SUPER|SHIFT', action = act.AdjustPaneSize { 'Right', 10 } },
+  { key = 'UpArrow',    mods = 'ALT|SUPER',   action = act.AdjustPaneSize { 'Up', 20 } },
+  { key = 'k',          mods = 'SUPER|SHIFT', action = act.AdjustPaneSize { 'Up', 10 } },
+  { key = 'DownArrow',  mods = 'ALT|SUPER',   action = act.AdjustPaneSize { 'Down', 20 } },
+  { key = 'j',          mods = 'SUPER|SHIFT', action = act.AdjustPaneSize { 'Down', 10 } },
+  { key = 'h',          mods = 'SUPER',       action = act.ActivatePaneDirection 'Left'  },
+  { key = 'j',          mods = 'SUPER',       action = act.ActivatePaneDirection 'Down'  },
+  { key = 'k',          mods = 'SUPER',       action = act.ActivatePaneDirection 'Up'  },
+  { key = 'l',          mods = 'SUPER',       action = act.ActivatePaneDirection 'Right'  },
+  { key = 'z',          mods = 'SUPER',       action = act.TogglePaneZoomState },
+  { key = '-',          mods = 'CTRL',        action = act.DisableDefaultAssignment },
+  { key = '=',          mods = 'CTRL',        action = act.DisableDefaultAssignment },
+}
