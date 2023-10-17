@@ -4,6 +4,10 @@ let maplocalleader = " "
 set nocompatible " make vim behave more useful
 let system_name = substitute(system('uname'), '\n', '', '') " for later
 
+if &shell =~# 'fish$'
+  set shell=sh
+endif
+
 " load local .vimrc files
 if !exists("*ReloadConfigs")
   function ReloadConfigs()
@@ -68,6 +72,8 @@ set ttimeout
 set timeoutlen=500
 set ttimeoutlen=100
 
+set fillchars=stl:=,stlnc:-,fold:=
+
 set laststatus=2
 set statusline=
 set statusline+=\ %F\ %M\ %Y\ %R
@@ -131,7 +137,7 @@ if has('gui')
   " setup tokyonight setting even though wo're starting with catppuccin
   let g:tokyonight_style = 'night'
   let g:tokyonight_enable_italic=1
-  call SetColorScheme("catppuccin_mocha")
+  call SetColorScheme("tokyonight")
 
   function! g:ToggleScheme()
     if g:colors_name ==# 'catppuccin_mocha'
@@ -196,47 +202,73 @@ function! AdjustWindowHieght(minheight, maxheight)
 endfunction
 
 
-"" TODO:
 "" Good place to setup Python subsytems if desired
 
 
 """" MARK Mappings """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Left> 0
+nnoremap <Right> $
+
 nnoremap <Space> <Nop>
 
-nnoremap <Leader>e :Lexplore<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>Q :q!<CR>
-nnoremap <Leader>wq :wq<CR>
-nnoremap <F2> :source .vimrc<CR>
+nnoremap <silent> <Leader>n :enew<CR>
+nnoremap <silent> <Leader>c :bdelete<CR>
+nnoremap <silent> <Leader>C :bdelete!<CR>
+nnoremap <silent> <Leader>e :Lexplore<CR>
+nnoremap <silent> <Leader>w :w<CR>
+nnoremap <silent> <Leader>q :q<CR>
+nnoremap <silent> <Leader>Q :q!<CR>
+nnoremap <silent> <Leader>wq :wq<CR>
 
+nnoremap <silent> <Leader><Tab> :bnext<CR>
+nnoremap <silent> <Leader><S-Tab> :bprev<CR>
+
+nnoremap <silent> <F2> :source ~/.vimrc<CR>
 
 "" UI
-nnoremap <Leader>urn :set relativenumber!<CR>
-nnoremap <Leader>ucl :set cursorline!<CR>
-nnoremap <Leader>ucc :set cursorcolumn!<CR>
-nnoremap <Leader>uw :set nowrap!<CR>
-nnoremap <Leader>ts :call ToggleScheme()<CR>
+nnoremap <silent> <Leader>urn :set relativenumber!<CR>
+nnoremap <silent> <Leader>ucl :set cursorline!<CR>
+nnoremap <silent> <Leader>ucc :set cursorcolumn!<CR>
+nnoremap <silent> <Leader>uw :set nowrap!<CR>
+nnoremap <silent> <Leader>ts :call ToggleScheme()<CR>
+nnoremap <silent> <Leader>tn :tabnew<CR>
 
-nnoremap <Leader>\| :vsplit<CR>
-nnoremap <Leader>\ :split<CR>
+nnoremap <silent> \| :vsplit<CR>
+nnoremap <silent> \ :split<CR>
 
-nnoremap <Left> :bprev<CR>
-nnoremap <Right> :bnext<CR>
+nnoremap <silent> <Leader>tc :tabclose<CR>
+nnoremap <silent> <Leader>t[ :tabprev<CR>
+nnoremap <silent> <Leader>t] :tabnext<CR>
+
+"" Toggle two views
+nnoremap <F8> <C-w>x
+"" Rotate back and forth through a row or column
+nnoremap <F9> <C-w>r
+nnoremap <F7> <C-w>R
 
 nnoremap <Leader>zi :set foldmethod=indent<CR>
 nnoremap <Leader>zs :set foldmethod=syntax<CR>
 nnoremap <Leader>ze :set foldmethod=expr<CR>
 
+nnoremap <Leader>. $
+
 " Move half page and center 
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
+nnoremap <Down> <C-d>zz
+nnoremap <Up> <C-u>zz
 
-" jump directionally aroud views
+" jump directionally aroud windows
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+
+"" move windows around, oddly...
+nnoremap <S-Down> <C-w>J
+nnoremap <S-Up> <C-w>K
+nnoremap <S-Left> <C-w>H
+nnoremap <S-Right> <C-w>L
 
 " Resize split windows using arrow keys by pressing:
 noremap <silent> <C-Left> :vertical resize -3<CR>
@@ -244,14 +276,25 @@ noremap <silent> <C-Right> :vertical resize +3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
+" fast equalize splits
+nnoremap <leader>u= <C-w>=
+" not sure why this isn't working
+" inoremap <C-=> <C-w>=
+vnoremap <leader>u= <C-w>=
+
+"" See for more info https://vim.fandom.com/wiki/Resize_splits_more_quickly
+
+"" Resize Splits by thirds 
+nnoremap <silent> <Leader>= :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+
 " Change 2 split windows from vert to horiz or horiz to vert
 " horizontal to vertical
-map <Leader>th <C-w>t<C-w>H
+nnoremap <Leader>\| <C-w>t<C-w>H
 " vertical to horizontal
-map <Leader>tk <C-w>t<C-w>K
+nnoremap <Leader>\ <C-w>t<C-w>K
 
 " move vertically by visual line (don't skip wrapped lines)
-" reqires restart to start working
 nmap j gj
 nmap k gk
 
@@ -261,17 +304,28 @@ nmap k gk
 "" Clipboard ""
 if system_name ==# "Darwin"
   set clipboard=unnamed
-  noremap <Leader>y "*y
-  noremap <Leader>p "*p
+""  noremap <Leader>y "*y
+""  noremap <Leader>p "*p
 elseif system_name ==# "Linux"
   set clipboard=unnamedplus
-  noremap <Leader>y "+y
-  noremap <Leader>p "+p
+""  noremap <Leader>y "+y
+""  noremap <Leader>p "+p
 endif
+
+"" paste from stable '0' register
+"" MARK: make decision together with this and blocks above 
+nnoremap <leader>p "0p 
+nnoremap <leader>P "0P 
+
+"" yank line w/no newline
+nnoremap Y mm_y$`m
+"" delete line (since D defaults to same as d$
+nnoremap D _d$
 
 "" Search ""
 " -clear search- 
-nnoremap <Leader>/ :let @/ = ""<CR>
+nnoremap <silent> <Leader>h :noh<CR>    
+
 " Center the cursor vertically when moving to the next word during a search.
 nnoremap n nzz
 nnoremap N Nzz
@@ -283,19 +337,32 @@ nnoremap m /MARK<CR>
 " set bindings to move whole lines up and down. 
 " See below for more:
 " https://vim.fandom.com/wiki/Moving_lines_up_or_down?veaction=edit&section=4
-nnoremap j :m .+1<CR>==
-nnoremap k :m .-2<CR>==
-inoremap j <ESC>:m .+1<CR>==gi
-inoremap k <ESC>:m .-2<CR>==gi
-vnoremap j :m '>+1<CR>gv=gv
-vnoremap k :m '<-2<CR>gv=gv
+nnoremap <silent> j :m .+1<CR>==
+nnoremap <silent> k :m .-2<CR>==
+inoremap <silent> j <ESC>:m .+1<CR>==gi
+inoremap <silent> k <ESC>:m .-2<CR>==gi
+vnoremap <silent> j :m '>+1<CR>gv=gv
+vnoremap <silent> k :m '<-2<CR>gv=gv
 
-nnoremap <S-Down> :m .+1<CR>==
-nnoremap <S-Up> :m .-2<CR>==
-inoremap <S-Down> <ESC>:m .+1<CR>==gi
-inoremap <S-Up> <ESC>:m .-2<CR>==gi
-vnoremap <S-Down> :m '>+1<CR>gv=gv
-vnoremap <S-Up> :m '<-2<CR>gv=gv
+nnoremap <silent> S-Down> :m .+1<CR>==
+nnoremap <silent> S-Up> :m .-2<CR>==
+inoremap <silent> S-Down> <ESC>:m .+1<CR>==gi
+inoremap <silent> S-Up> <ESC>:m .-2<CR>==gi
+vnoremap <silent> S-Down> :m '>+1<CR>gv=gv
+vnoremap <silent> S-Up> :m '<-2<CR>gv=gv
+
+"" indented blocks
+nnoremap <leader>{} vip$<ESC>a<CR>}<ESC>{i{<ESC>vi{><ESC>
+
+"" {word} to { \n } TOdO: Still needs work
+nnoremap <F4> di{i<CR><ESC>O<ESC>P>>$a,<ESC>
+"" wrap word in { }
+nnoremap <F3>{ diwi{}<ESC>P
+nnoremap <F3>[ diwi[]<ESC>P
+nnoremap <F3>( diwi()<ESC>P
+nnoremap <F3>" diwi""<ESC>P
+nnoremap <F3>' diwi''<ESC>P
+nnoremap <F3>< diwi<><ESC>P
 
 " quick UPPERCASE and lowercase word before (applies to the word you're in if mid-word)
 inoremap u <Esc>gUiw`]
@@ -319,6 +386,52 @@ if version >= 703
     set undofile
     set undoreload=10000
 endif
+
+" TODO TODO TODO MARK TODO TODO TODO
+"""""""""""""""""""""""-- smart deletion, dd
+"""""""""""""""""""""""-- It solves the issue, where you want to delete empty line, but dd will override your last yank.
+"""""""""""""""""""""""-- Code below will check if u are deleting empty line, if so - use black hole register.
+"""""""""""""""""""""""-- [src: https://www.reddit.com/r/neovim/comments/w0jzzv/comment/igfjx5y/?utm_source=share&utm_medium=web2x&context=3]
+"""""""""""""""""""""""local function smart_dd()
+"""""""""""""""""""""""	if vim.api.nvim_get_current_line():match("^%s*$") then
+"""""""""""""""""""""""		return "\"_dd"
+"""""""""""""""""""""""	else return "dd" end
+"""""""""""""""""""""""end
+"""""""""""""""""""""""vim.keymap.set("n", "dd", smart_dd, { noremap = true, expr = true })
+
+"""""""""""""""""""""""""--[[
+"""""""""""""""""""""""""	easier moving of code blocks
+"""""""""""""""""""""""""	Try to go into visual mode (v), thenselect several lines of code
+"""""""""""""""""""""""""      here and then press ``>`` several times.
+"""""""""""""""""""""""""--]]
+"""""""""""""""""""""""""keymap('v', '<', '<gv', options)
+"""""""""""""""""""""""""keymap('v', '>', '>gv', options)
+"""""""""""""""""""""""""
+"""""""""""""""""""""""""-- going back to normal mode which works even in vim's terminal
+"""""""""""""""""""""""""-- you will need this if you use floaterm to escape terminal
+"""""""""""""""""""""""""keymap('t', '<Esc>', '<c-\\><c-n
+
+""""""""""local init_color_fg = vim.api.nvim_get_hl_by_name("CursorLineNr", true).foreground
+""""""""""local init_color_bg = vim.api.nvim_get_hl_by_name("CursorLineNr", true).background
+""""""""""api.nvim_create_autocmd(
+""""""""""	{ 'ModeChanged', 'InsertLeave'},
+""""""""""	{
+""""""""""		desc = "change cursor color on mode change",
+""""""""""		group = group,
+""""""""""		callback = function()
+""""""""""			local mode = vim.api.nvim_get_mode().mode
+""""""""""			if mode == "i" then
+""""""""""				api.nvim_set_hl(0, "CursorLineNr", {fg="#000000", bg="#ac3131", bold=true})
+""""""""""			elseif mode == "v" or mode == "V" or mode == "" then
+""""""""""				api.nvim_set_hl(0, "CursorLineNr", {fg="#000000", bg="#d1d1d1", bold=true})
+""""""""""			else
+""""""""""				vim.api.nvim_set_hl(0, "CursorLineNr", {fg=init_color_fg, bg=init_color_bg, bold=true})
+""""""""""			end
+""""""""""		end,
+""""""""""	}
+"""""""""")
+
+
 
 " TODO: like the idea, but needs more thought
 " You can split a window into sections by typing `:split` or `:vsplit`.
