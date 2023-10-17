@@ -1,4 +1,4 @@
-"" K2 SupaVim-CindarEdition ""
+"" K2 SupaVim v1.1b1 ""
 let mapleader = " "
 let maplocalleader = " "
 
