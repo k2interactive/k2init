@@ -1,4 +1,4 @@
-"" K2 SupaVim v1.1b9 ""
+"" K2 SupaVim v1.1b11 ""
 let mapleader = " "
 let maplocalleader = " "
 
