@@ -15,6 +15,23 @@ MacOS specific:
 - set key repeat and delay
 
 
+``` bash
+defaults write com.apple.finder DisableAnimations -bool true
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false
+defaults write com.vscodium ApplePressAndHoldEnabled -bool false
+defaults write com.microsoft.VSCodeExploration ApplePressAndHoldEnabled -bool false
+defaults write com.google.android.studio ApplePressAndHoldEnabled -bool false
+defaults write -g InitialKeyRepeat -int 10
+defaults write -g KeyRepeat -int 1
+defaults write -g InitialKeyRepeat -int 12
+defaults write -g ApplePressAndHoldEnabled 0
+
+```
+MacOS specific:
+- disable press and hold so editors can have key repeat
+
+
 ## Color & Terminal Control
 
 ``` bash
